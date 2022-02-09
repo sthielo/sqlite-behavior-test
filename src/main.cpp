@@ -37,8 +37,12 @@ int main(int argc, char** argv)
         string cmd = waitInput();  // wait 'END' or 'CONTINUE' (any input) - give time to gather process stats
         for (int i = 0; 0 != cmd.compare("END"); i++) {
 
+            // "snapshotting" from in-memory db to another in-memory db (using distinct file URLs) seems to be the trigger in go code, but not so in this c++ port => ???
         	snapshot_db = snapshot(db);
+
+        	// some intensive db activity - makes memory leak more obvious in go code, but not so in this c++ port => ???
             dump(snapshot_db);
+
             int rc = sqlite3_close(snapshot_db);
             if( rc != 0 ) {
                 cerr << "error closing snapshot: rc=" << rc << endl;
