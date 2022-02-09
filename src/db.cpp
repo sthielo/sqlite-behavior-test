@@ -106,6 +106,8 @@ sqlite3* init_db() {
         cerr << "Error sqlite cfg SQLITE_CONFIG_URI: rc=" << rc << endl;
         throw "Failed to config SQLITE_CONFIG_URI";
     }
+
+    // corresponds to URI param: _mutex=no - see: SQLITE_OPEN_NOMUTEX in https://www.sqlite.org/c3ref/open.html
     rc = sqlite3_config(SQLITE_CONFIG_MULTITHREAD);
     if (rc) {
         cerr << "Error sqlite cfg SQLITE_CONFIG_MULTITHREAD: rc=" << rc << endl;

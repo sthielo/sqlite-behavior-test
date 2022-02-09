@@ -30,7 +30,9 @@ sqlite3* snapshot(sqlite3* db) {
         cerr << "Error sqlite3_backup_init " << sqlite3_errmsg(db) << endl;
         throw "Failed to sqlite3_backup_init";
     }
-    rc = sqlite3_backup_step(backup, -1);
+    for ( ; rc != SQLITE_DONE && rc != SQLITE_LOCKED && rc != SQLITE_BUSY ; ) {
+        rc = sqlite3_backup_step(backup, 250);
+    }
     failOnError(rc, SQLITE_DONE, "sqlite3_backup_step");
     rc = sqlite3_backup_finish(backup);
     failOnError(rc, SQLITE_OK, "sqlite3_backup_finish");
